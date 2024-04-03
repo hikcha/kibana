@@ -655,6 +655,8 @@ ${JSON.stringify(cypressConfigFile, null, 2)}
                   log.info(`${id} : Deleting project ${PROJECT_NAME}...`);
                   await deleteSecurityProject(project.id, PROJECT_NAME, API_KEY);
                 } catch (error) {
+                  // False positive
+                  // eslint-disable-next-line require-atomic-updates
                   result = error;
                   failedSpecFilePaths.push(filePath);
                 }
@@ -685,17 +687,26 @@ ${JSON.stringify(cypressConfigFile, null, 2)}
         ),
         ...retryResults,
       ] as CypressCommandLine.CypressRunResult[]);
-      console.log(`Initial results : ${initialResults}`);
-      console.log(`Retry results : ${retryResults}`);
-      const hasFailedTests = _.some(
-        // only fail the job if retry failed as well
-        retryResults,
-        (result) =>
-          (result as CypressCommandLine.CypressFailedRunResult)?.status === 'failed' ||
-          (result as CypressCommandLine.CypressRunResult)?.totalFailed
-      );
-      console.log(`Has failed tests: ${hasFailedTests}`);
-      if (hasFailedTests) {
+      const hasFailedTests = (
+        runResults: Array<
+          | CypressCommandLine.CypressFailedRunResult
+          | CypressCommandLine.CypressRunResult
+          | undefined
+        >
+      ) =>
+        _.some(
+          // only fail the job if retry failed as well
+          runResults,
+          (runResult) =>
+            (runResult as CypressCommandLine.CypressFailedRunResult)?.status === 'failed' ||
+            (runResult as CypressCommandLine.CypressRunResult)?.totalFailed
+        );
+
+      const hasFailedInitialTests = hasFailedTests(initialResults);
+      const hasFailedRetryTests = hasFailedTests(retryResults);
+
+      // If the initialResults had failures and failedSpecFilePaths was not populated properly return errors
+      if (hasFailedRetryTests || (hasFailedInitialTests && !retryResults.length)) {
         throw createFailError('Not all tests passed');
       }
     },
