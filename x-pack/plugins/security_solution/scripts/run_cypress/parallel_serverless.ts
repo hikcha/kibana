@@ -681,6 +681,7 @@ ${JSON.stringify(cypressConfigFile, null, 2)}
         ),
         ...retryResults,
       ] as CypressCommandLine.CypressRunResult[]);
+      console.log(retryResults);
       const hasFailedTests = _.some(
         // only fail the job if retry failed as well
         retryResults,
@@ -688,6 +689,7 @@ ${JSON.stringify(cypressConfigFile, null, 2)}
           (result as CypressCommandLine.CypressFailedRunResult)?.status === 'failed' ||
           (result as CypressCommandLine.CypressRunResult)?.totalFailed
       );
+      console.log(hasFailedTests);
       if (hasFailedTests) {
         throw createFailError('Not all tests passed');
       }
