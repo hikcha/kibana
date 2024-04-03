@@ -41,7 +41,7 @@
     "cypress:run:qa:serverless:entity_analytics": "yarn cypress:qa:serverless --spec './cypress/e2e/entity_analytics/**/*.cy.ts'",
     "cypress:run:qa:serverless:investigations": "yarn cypress:qa:serverless --spec './cypress/e2e/investigations/**/*.cy.ts'",
     "cypress:run:qa:serverless:explore": "yarn cypress:qa:serverless --spec './cypress/e2e/explore/**/*.cy.ts'",
-    "cypress:run:qa:serverless:rule_management": "yarn cypress:qa:serverless --spec './cypress/e2e/detection_response/rule_management/!(prebuilt_rules)/**/*.cy.ts'",
+    "cypress:run:qa:serverless:rule_management": "yarn cypress:qa:serverless --spec './cypress/e2e/detection_response/rule_management/rule_actions/bulk_actions/bulk_edit_rules.cy.ts'",
     "cypress:run:qa:serverless:rule_management:prebuilt_rules": "yarn cypress:qa:serverless --spec './cypress/e2e/detection_response/rule_management/prebuilt_rules/**/*.cy.ts'",
     "cypress:run:qa:serverless:detection_engine": "yarn cypress:qa:serverless --spec './cypress/e2e/detection_response/detection_engine/!(exceptions)/**/*.cy.ts'",
     "cypress:run:qa:serverless:detection_engine:exceptions": "yarn cypress:qa:serverless --spec './cypress/e2e/detection_response/detection_engine/exceptions/**/*.cy.ts'",

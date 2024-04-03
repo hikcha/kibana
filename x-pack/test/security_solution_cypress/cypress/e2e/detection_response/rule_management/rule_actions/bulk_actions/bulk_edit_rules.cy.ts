@@ -200,9 +200,9 @@ describe('Detection rules, bulk edit', { tags: ['@ess', '@serverless'] }, () => 
       });
     });
 
-    it(
+    it.only(
       'Prebuilt and custom rules selected: user proceeds with custom rules editing',
-      { tags: ['@brokenInServerlessQA'] },
+      
       () => {
         getRulesManagementTableRows().then((existedRulesRows) => {
           createAndInstallMockedPrebuiltRules(PREBUILT_RULES);
