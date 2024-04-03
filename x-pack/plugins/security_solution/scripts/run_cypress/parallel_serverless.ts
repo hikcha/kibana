@@ -648,11 +648,15 @@ ${JSON.stringify(cypressConfigFile, null, 2)}
                       env: cyCustomEnv,
                     },
                   });
+                  if ((result as CypressCommandLine.CypressRunResult)?.totalFailed) {
+                    failedSpecFilePaths.push(filePath);
+                  }
                   // Delete serverless project
                   log.info(`${id} : Deleting project ${PROJECT_NAME}...`);
                   await deleteSecurityProject(project.id, PROJECT_NAME, API_KEY);
                 } catch (error) {
                   result = error;
+                  failedSpecFilePaths.push(filePath);
                 }
               }
               return result;
@@ -681,7 +685,8 @@ ${JSON.stringify(cypressConfigFile, null, 2)}
         ),
         ...retryResults,
       ] as CypressCommandLine.CypressRunResult[]);
-      console.log(retryResults);
+      console.log(`Initial results : ${initialResults}`);
+      console.log(`Retry results : ${retryResults}`);
       const hasFailedTests = _.some(
         // only fail the job if retry failed as well
         retryResults,
@@ -689,7 +694,7 @@ ${JSON.stringify(cypressConfigFile, null, 2)}
           (result as CypressCommandLine.CypressFailedRunResult)?.status === 'failed' ||
           (result as CypressCommandLine.CypressRunResult)?.totalFailed
       );
-      console.log(hasFailedTests);
+      console.log(`Has failed tests: ${hasFailedTests}`);
       if (hasFailedTests) {
         throw createFailError('Not all tests passed');
       }
