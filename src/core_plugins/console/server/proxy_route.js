@@ -46,7 +46,7 @@ export const createProxyRoute = ({
     validate: {
       query: Joi.object().keys({
         method: Joi.string()
-          .valid('HEAD', 'GET', 'POST', 'PUT', 'DELETE')
+          .valid('GET')
           .insensitive()
           .required(),
         path: Joi.string().required()
