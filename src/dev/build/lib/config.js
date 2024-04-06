@@ -10,7 +10,7 @@ export async function getConfig({ isRelease }) {
   const repoRoot = dirname(pkgPath);
   const nodeVersion = pkg.engines.node;
 
-  const platforms = ['darwin', 'linux', 'windows'].map(createPlatform);
+  const platforms = ['linux'].map(createPlatform);
   const versionInfo = await getVersionInfo({
     isRelease,
     pkg,
